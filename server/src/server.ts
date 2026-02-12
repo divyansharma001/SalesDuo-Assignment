@@ -1,11 +1,14 @@
 import app from './app';
 import config from './config/env';
-import db from './database/db';
+import { pool } from './database/db';
 
 const startServer = async () => {
     try {
-        await db.raw('SELECT 1');
+        const connection = await pool.getConnection();
+        await connection.ping();
+        connection.release();
         console.log('Database connected successfully');
+
         app.listen(config.port, () => {
             console.log(`Server running on port ${config.port}`);
         });
