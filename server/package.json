@@ -23,9 +23,9 @@
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.39.0",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "joi": "^18.0.2",
+    "limitra": "^1.0.1",
     "morgan": "^1.10.1",
     "mysql2": "^3.17.0",
     "winston": "^3.19.0"

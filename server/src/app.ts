@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import productRoutes from './routes/product.routes';
 import optimizationRoutes from './routes/optimization.routes';
 import { errorHandler } from './middleware/errorHandler';
+import { apiLimiter } from './middleware/rateLimiter';
 
 const app: Application = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
 app.use(helmet());
 app.use(morgan('dev'));
+app.use('/api', apiLimiter);
 
 app.get('/api/health', (_req: Request, res: Response) => {
     res.status(200).json({

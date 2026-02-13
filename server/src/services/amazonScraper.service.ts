@@ -65,7 +65,7 @@ export const scrapeAmazonProduct = async (asin: string, marketplace: string = DE
     let description = '';
     const descSelectors = [
         '#productDescription', 
-        '#aplus', // A+ content often replaces standard description
+        '#aplus', 
         '.aplus-v2' 
     ];
     
