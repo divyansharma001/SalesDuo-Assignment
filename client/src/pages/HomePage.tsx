@@ -74,10 +74,6 @@ export default function HomePage() {
           </div>
 
           <ComparisonView original={data.original} optimized={data.optimized} />
-
-          <p className="text-center text-xs text-slate-400">
-            Optimized using {data.modelUsed} &middot; {new Date(data.createdAt).toLocaleString()}
-          </p>
         </div>
       )}
     </div>

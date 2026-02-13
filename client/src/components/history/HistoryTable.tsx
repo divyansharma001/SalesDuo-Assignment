@@ -50,7 +50,7 @@ export default function HistoryTable({ optimizations }: Props) {
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-slate-900 truncate">{title}</p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    {date && formatDate(date)} &middot; {model}
+                    {date && formatDate(date)}
                   </p>
                 </div>
               </div>
