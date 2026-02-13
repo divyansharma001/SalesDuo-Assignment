@@ -1,13 +1,27 @@
 import { Link } from 'react-router-dom';
+import { Trash2 } from 'lucide-react';
 import { formatDate } from '../../utils/format-date';
+import { deleteOptimizationsByAsin } from '../../services/product.api';
 import type { RecentItem } from '../../types';
 
 interface Props {
   items: RecentItem[];
+  onDelete?: (asin: string) => void;
 }
 
-export default function RecentOptimizations({ items }: Props) {
+export default function RecentOptimizations({ items, onDelete }: Props) {
   if (!items || items.length === 0) return null;
+
+  const handleDelete = async (e: React.MouseEvent, asin: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await deleteOptimizationsByAsin(asin);
+      onDelete?.(asin);
+    } catch {
+      // silently fail
+    }
+  };
 
   return (
     <div>
@@ -17,8 +31,15 @@ export default function RecentOptimizations({ items }: Props) {
           <Link
             key={item.asin}
             to={`/history/${item.asin}`}
-            className="bg-white rounded-lg border border-slate-200 p-3 hover:border-emerald-300 hover:shadow-sm transition-all"
+            className="group relative bg-white rounded-lg border border-slate-200 p-3 hover:border-emerald-300 hover:shadow-sm transition-all"
           >
+            <button
+              onClick={(e) => handleDelete(e, item.asin)}
+              className="absolute top-2 right-2 p-1.5 rounded-md text-slate-300 opacity-0 group-hover:opacity-100 hover:text-red-500 hover:bg-red-50 transition-all"
+              title="Delete optimization"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
             <div className="flex items-start gap-2.5">
               {item.originalImageUrl && (
                 <img

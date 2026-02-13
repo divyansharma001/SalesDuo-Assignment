@@ -12,3 +12,6 @@ export const getOptimizationById = (id: number) =>
 
 export const getRecentOptimizations = () =>
   api.get('/optimizations/recent') as Promise<ApiResponse<RecentItem[]>>;
+
+export const deleteOptimizationsByAsin = (asin: string) =>
+  api.delete(`/optimizations/history/${asin}`) as Promise<ApiResponse<{ asin: string; deletedCount: number }>>;

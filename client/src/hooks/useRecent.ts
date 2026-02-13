@@ -13,5 +13,9 @@ export function useRecent() {
       .finally(() => setLoading(false));
   }, []);
 
-  return { data, loading };
+  const removeByAsin = (asin: string) => {
+    setData((prev) => prev ? prev.filter((item) => item.asin !== asin) : prev);
+  };
+
+  return { data, loading, removeByAsin };
 }

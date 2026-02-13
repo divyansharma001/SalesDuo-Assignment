@@ -9,7 +9,7 @@ import RecentOptimizations from '../components/history/RecentOptimizations';
 
 export default function HomePage() {
   const { data, loading, error, optimize, reset } = useOptimize();
-  const { data: recentItems, loading: recentLoading } = useRecent();
+  const { data: recentItems, loading: recentLoading, removeByAsin } = useRecent();
 
   return (
     <div className="space-y-8">
@@ -42,7 +42,7 @@ export default function HomePage() {
       {/* Recent optimizations */}
       {!data && !loading && !recentLoading && recentItems && recentItems.length > 0 && (
         <div className="max-w-3xl mx-auto">
-          <RecentOptimizations items={recentItems} />
+          <RecentOptimizations items={recentItems} onDelete={removeByAsin} />
         </div>
       )}
 

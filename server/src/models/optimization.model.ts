@@ -102,4 +102,11 @@ export const OptimizationModel = {
       .where(eq(optimizations.asin, asin));
     return result.total;
   },
+
+  async deleteByAsin(asin: string): Promise<number> {
+    const result = await db
+      .delete(optimizations)
+      .where(eq(optimizations.asin, asin));
+    return result[0].affectedRows ?? 0;
+  },
 };

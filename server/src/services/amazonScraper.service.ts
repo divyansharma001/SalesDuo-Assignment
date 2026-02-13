@@ -63,17 +63,40 @@ export const scrapeAmazonProduct = async (asin: string, marketplace: string = DE
 
     // 3. Description (Multiple possible selectors)
     let description = '';
-    const descSelectors = [
-        '#productDescription', 
-        '#aplus', 
-        '.aplus-v2' 
-    ];
     
-    for (const selector of descSelectors) {
-        const text = $(selector).text().trim().replace(/\s+/g, ' ');
-        if (text) {
-            description = text;
-            break;
+    // Try #productDescription first (cleanest source)
+    const prodDesc = $('#productDescription').clone();
+    prodDesc.find('style, script, noscript, link').remove();
+    const prodDescText = prodDesc.text().trim().replace(/\s+/g, ' ');
+    
+    if (prodDescText && prodDescText.length > 20) {
+        description = prodDescText;
+    } else {
+        // Fallback: extract only meaningful text from A+ content
+        const aplusEl = $('#aplus, .aplus-v2').first().clone();
+        // Remove all non-content elements
+        aplusEl.find('style, script, noscript, link, iframe, svg, img, input, select, button, nav, header, footer').remove();
+        // Remove elements that typically contain CSS class definitions or JS
+        aplusEl.find('[class*="premium-aplus"], [class*="container-with-background"]').each((_, el) => {
+            const innerText = $(el).text().trim();
+            // If the element text looks like CSS/JS (contains { } or function), remove it
+            if (innerText.includes('{') && innerText.includes('}')) {
+                $(el).remove();
+            }
+        });
+        let aplusText = aplusEl.text().trim().replace(/\s+/g, ' ');
+        // Strip any remaining CSS-like content: anything between { }
+        aplusText = aplusText.replace(/\{[^}]*\}/g, '').replace(/\s+/g, ' ').trim();
+        // Strip common CSS/JS noise patterns
+        aplusText = aplusText
+            .replace(/\.\w[\w.-]*\s*\{[^}]*\}/g, '')
+            .replace(/function\s+\w+\([^)]*\)\s*\{[^}]*\}/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+        
+        // Only use if we got meaningful content (not just CSS residue)
+        if (aplusText.length > 50 && !aplusText.startsWith('.aplus')) {
+            description = aplusText;
         }
     }
 

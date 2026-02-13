@@ -47,3 +47,16 @@ export async function getById(req: Request, res: Response, next: NextFunction) {
     next(err);
   }
 }
+
+export async function deleteByAsin(req: Request, res: Response, next: NextFunction) {
+  try {
+    const asin = (req.params.asin as string).toUpperCase();
+    const deleted = await OptimizationModel.deleteByAsin(asin);
+    if (deleted === 0) {
+      throw new ApiError(404, `No optimizations found for ASIN ${asin}`);
+    }
+    res.json({ success: true, data: { asin, deletedCount: deleted } });
+  } catch (err) {
+    next(err);
+  }
+}
