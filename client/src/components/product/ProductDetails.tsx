@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import BulletPointList from './BulletPointList';
 import KeywordBadges from './KeywordBadges';
+import { renderInlineMarkdown } from '../../utils/format-text';
 import type { OriginalListing, OptimizedListing } from '../../types';
 
 interface Props {
@@ -30,7 +31,7 @@ export default function ProductDetails({ data, type = 'original' }: Props) {
       <div>
         <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Description</h4>
         <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
-          {!desc ? 'No description available' : isLong && !expanded ? desc.slice(0, DESC_CLAMP).trimEnd() + '…' : desc}
+          {!desc ? 'No description available' : renderInlineMarkdown(isLong && !expanded ? desc.slice(0, DESC_CLAMP).trimEnd() + '…' : desc)}
         </p>
         {isLong && (
           <button

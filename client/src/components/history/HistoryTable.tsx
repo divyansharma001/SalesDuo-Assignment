@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { formatDate } from '../../utils/format-date';
+import { renderInlineMarkdown } from '../../utils/format-text';
 import Badge from '../ui/Badge';
 import type { OptimizationRecord } from '../../types';
 
@@ -72,14 +73,14 @@ export default function HistoryTable({ optimizations }: Props) {
                   <ul className="space-y-1">
                     {bullets.map((b, i) => (
                       <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                        <span className="text-emerald-500 mt-0.5">&#8226;</span>{b}
+                        <span className="text-emerald-500 mt-0.5">&#8226;</span><span>{renderInlineMarkdown(b)}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
                   <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Description</h4>
-                  <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{description}</p>
+                  <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{description ? renderInlineMarkdown(description) : ''}</p>
                 </div>
                 <div>
                   <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Keywords</h4>

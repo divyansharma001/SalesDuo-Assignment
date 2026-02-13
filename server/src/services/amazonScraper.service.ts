@@ -54,12 +54,35 @@ export const scrapeAmazonProduct = async (asin: string, marketplace: string = DE
         throw new ApiError(422, `Unable to extract product data for ASIN ${asin}. This may not be a valid product page on ${marketplace}.`);
     }
 
-    // 2. Bullet Points
+    // 2. Bullet Points (with fallback selectors and noise filtering)
     const bullet_points: string[] = [];
-    $('#feature-bullets ul li span.a-list-item').each((_, el) => {
-      const text = $(el).text().trim();
-      if (text) bullet_points.push(text);
-    });
+    const bulletSelectors = [
+      '#feature-bullets ul li span.a-list-item',
+      '#feature-bullets .a-list-item',
+      '#featurebullets_feature_div li span.a-list-item',
+      'ul.a-unordered-list.a-vertical li span.a-list-item',
+    ];
+
+    for (const selector of bulletSelectors) {
+      $(selector).each((_, el) => {
+        const text = $(el).text().trim().replace(/\s+/g, ' ');
+        // Filter out noise: too short, too long, or known Amazon UI patterns
+        if (
+          text &&
+          text.length > 15 &&
+          text.length < 1000 &&
+          !text.toLowerCase().includes('consider a similar item') &&
+          !text.toLowerCase().includes('enhance your purchase') &&
+          !text.toLowerCase().includes('see more product details') &&
+          !text.startsWith('›')
+        ) {
+          bullet_points.push(text);
+        }
+      });
+      if (bullet_points.length > 0) break; // Use first successful selector
+    }
+
+    logger.info(`Extracted ${bullet_points.length} bullet points for ASIN: ${asin}`);
 
     // 3. Description (Multiple possible selectors)
     let description = '';

@@ -5,9 +5,6 @@ export default function Footer() {
         <p className="text-xs text-slate-400">
           &copy; {new Date().getFullYear()} ListingAI &mdash; AI-powered Amazon listing optimization
         </p>
-        <p className="text-xs text-slate-300">
-          Built with Google Gemini
-        </p>
       </div>
     </footer>
   );
