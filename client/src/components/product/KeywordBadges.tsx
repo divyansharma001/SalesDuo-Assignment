@@ -9,10 +9,10 @@ export default function KeywordBadges({ keywords }: Props) {
 
   return (
     <div>
-      <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+      <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
         Suggested Keywords
       </h4>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5">
         {keywords.map((keyword, index) => (
           <Badge key={index}>{keyword}</Badge>
         ))}

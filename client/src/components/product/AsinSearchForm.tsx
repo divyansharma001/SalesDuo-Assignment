@@ -23,34 +23,40 @@ export default function AsinSearchForm({ onSubmit, loading }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex-1">
-          <label htmlFor="asin-input" className="sr-only">Amazon ASIN</label>
-          <input
-            id="asin-input"
-            type="text"
-            value={asin}
-            onChange={(e) => {
-              setAsin(e.target.value);
-              if (validationError) setValidationError(null);
-            }}
-            placeholder="Enter Amazon ASIN (e.g., B08N5WRWNW)"
-            maxLength={10}
-            className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all text-slate-900 placeholder-slate-400 text-lg font-mono tracking-wider"
-            disabled={loading}
-          />
-          {validationError && (
-            <p className="mt-1.5 text-sm text-red-600">{validationError}</p>
-          )}
-        </div>
-        <button
-          type="submit"
+      <div className="glass-card px-6 py-5">
+        {/* Input */}
+        <label htmlFor="asin-input" className="sr-only">Amazon ASIN</label>
+        <input
+          id="asin-input"
+          type="text"
+          value={asin}
+          onChange={(e) => {
+            setAsin(e.target.value);
+            if (validationError) setValidationError(null);
+          }}
+          placeholder="Enter Amazon ASIN (e.g., B08N5WRWNW)"
+          maxLength={10}
+          className="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-mono tracking-wider py-1"
           disabled={loading}
-          className="px-8 py-3 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-white font-semibold rounded-lg transition-colors shadow-sm hover:shadow-md disabled:cursor-not-allowed text-lg"
-        >
-          {loading ? 'Optimizing...' : 'Optimize'}
-        </button>
+        />
+
+        {/* Separator */}
+        <div className="border-t border-slate-200/60 my-4" />
+
+        {/* Button row */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-mint px-7 py-2.5 rounded-xl text-sm tracking-wide"
+          >
+            {loading ? 'Optimizing...' : 'Optimize'}
+          </button>
+        </div>
       </div>
+      {validationError && (
+        <p className="mt-2.5 text-sm text-red-600 pl-4">{validationError}</p>
+      )}
     </form>
   );
 }

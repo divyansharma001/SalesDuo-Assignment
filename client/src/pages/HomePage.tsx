@@ -14,13 +14,19 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-          Optimize Your Amazon Listings
+      <div className="text-center pt-8 sm:pt-12">
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
+          Optimize Your Amazon<br className="hidden sm:block" /> Listings
         </h2>
-        <p className="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">
-          Enter an ASIN and let AI analyze and optimize your product listing for better visibility and conversions.
-        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-slate-500 text-sm">
+          <span>AI-Powered Optimization</span>
+          <span className="hidden sm:inline text-slate-300">&middot;</span>
+          <span>SEO-Friendly Titles</span>
+          <span className="hidden sm:inline text-slate-300">&middot;</span>
+          <span>Smart Bullet Points</span>
+          <span className="hidden sm:inline text-slate-300">&middot;</span>
+          <span>Keyword Suggestions</span>
+        </div>
       </div>
 
       {/* Search */}
@@ -30,53 +36,50 @@ export default function HomePage() {
 
       {/* Error */}
       {error && (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-lg mx-auto">
           <ErrorAlert message={error} onDismiss={reset} />
         </div>
       )}
 
       {/* Loading */}
       {loading && (
-        <LoadingSpinner message="Fetching product data and generating AI optimization... This may take 15-30 seconds." />
+        <LoadingSpinner message="Fetching product data and generating AI optimization..." />
       )}
 
-      {/* Recent optimizations — shown when no result is displayed */}
+      {/* Recent optimizations */}
       {!data && !loading && !recentLoading && recentItems && recentItems.length > 0 && (
         <RecentOptimizations items={recentItems} />
       )}
 
       {/* Results */}
       {data && !loading && (
-        <div className="space-y-6">
-          {/* ASIN badge + history link */}
+        <div className="space-y-5">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-slate-800 text-white rounded-md font-mono text-sm">
+              <span className="px-2.5 py-0.5 bg-slate-800 text-white rounded font-mono text-xs">
                 {data.asin}
               </span>
               {data.original.imageUrl && (
                 <img
                   src={data.original.imageUrl}
                   alt={data.original.title}
-                  className="w-12 h-12 object-contain rounded border border-slate-200"
+                  className="w-10 h-10 object-contain rounded border border-slate-200"
                 />
               )}
             </div>
             <Link
               to={`/history/${data.asin}`}
-              className="text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
+              className="text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-1"
             >
               View optimization history
-              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
               </svg>
             </Link>
           </div>
 
-          {/* Side-by-side comparison */}
           <ComparisonView original={data.original} optimized={data.optimized} />
 
-          {/* Meta */}
           <p className="text-center text-xs text-slate-400">
             Optimized using {data.modelUsed} &middot; {new Date(data.createdAt).toLocaleString()}
           </p>

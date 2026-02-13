@@ -4,7 +4,7 @@ interface Props {
 
 export default function Badge({ children }: Props) {
   return (
-    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200">
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
       {children}
     </span>
   );

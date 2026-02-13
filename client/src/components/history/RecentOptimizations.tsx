@@ -11,30 +11,30 @@ export default function RecentOptimizations({ items }: Props) {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-slate-800 mb-3">Recent Optimizations</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h3 className="text-sm font-semibold text-slate-700 mb-2">Recent Optimizations</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {items.map((item) => (
           <Link
             key={item.asin}
             to={`/history/${item.asin}`}
-            className="bg-white rounded-lg border border-slate-200 p-4 hover:border-amber-300 hover:shadow-md transition-all group"
+            className="bg-white rounded-lg border border-slate-200 p-3 hover:border-emerald-300 hover:shadow-sm transition-all"
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2.5">
               {item.originalImageUrl && (
                 <img
                   src={item.originalImageUrl}
                   alt={item.originalTitle}
-                  className="w-12 h-12 object-contain rounded border border-slate-100 flex-shrink-0"
+                  className="w-10 h-10 object-contain rounded border border-slate-100 shrink-0"
                 />
               )}
               <div className="min-w-0 flex-1">
-                <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-mono text-xs mb-1">
+                <span className="inline-block px-1.5 py-px bg-slate-100 text-slate-600 rounded font-mono text-[11px] mb-0.5">
                   {item.asin}
                 </span>
-                <p className="text-sm font-medium text-slate-900 line-clamp-2 leading-snug">
+                <p className="text-xs font-medium text-slate-900 line-clamp-2 leading-snug">
                   {item.originalTitle}
                 </p>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-400 mt-0.5">
                   {formatDate(item.createdAt)}
                 </p>
               </div>

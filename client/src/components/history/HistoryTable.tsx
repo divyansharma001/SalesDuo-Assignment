@@ -12,9 +12,9 @@ export default function HistoryTable({ optimizations }: Props) {
 
   if (!optimizations || optimizations.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-500">
-        <p className="text-lg font-medium">No optimization history yet</p>
-        <p className="text-sm mt-1">Go to the home page and optimize this ASIN to see history here.</p>
+      <div className="text-center py-10 text-slate-500">
+        <p className="text-base font-medium">No optimization history yet</p>
+        <p className="text-xs mt-1">Go to the home page and optimize this ASIN to see history here.</p>
       </div>
     );
   }
@@ -26,7 +26,7 @@ export default function HistoryTable({ optimizations }: Props) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {optimizations.map((opt, index) => {
         const isExpanded = expandedId === opt.id;
         const title = opt.optimizedTitle || opt.optimized_title;
@@ -40,21 +40,21 @@ export default function HistoryTable({ optimizations }: Props) {
           <div key={opt.id} className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
             <button
               onClick={() => setExpandedId(isExpanded ? null : opt.id)}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
+              className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50/50 transition-colors"
             >
-              <div className="flex items-center gap-4 min-w-0">
-                <span className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 text-sm font-bold flex items-center justify-center flex-shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold flex items-center justify-center shrink-0">
                   #{optimizations.length - index}
                 </span>
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-slate-900 truncate">{title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-400 mt-0.5">
                     {date && formatDate(date)} &middot; {model}
                   </p>
                 </div>
               </div>
               <svg
-                className={`w-5 h-5 text-slate-400 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-slate-400 transition-transform shrink-0 ml-3 ${isExpanded ? 'rotate-180' : ''}`}
                 viewBox="0 0 20 20" fill="currentColor"
               >
                 <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
@@ -62,28 +62,28 @@ export default function HistoryTable({ optimizations }: Props) {
             </button>
 
             {isExpanded && (
-              <div className="px-5 pb-5 border-t border-slate-100 pt-4 space-y-4">
+              <div className="px-4 pb-4 border-t border-slate-100 pt-3 space-y-3">
                 <div>
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase mb-1">Optimized Title</h4>
+                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Optimized Title</h4>
                   <p className="text-sm text-slate-800">{title}</p>
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase mb-2">Optimized Bullet Points</h4>
-                  <ul className="space-y-1.5">
+                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Bullet Points</h4>
+                  <ul className="space-y-1">
                     {bullets.map((b, i) => (
                       <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                        <span className="text-amber-500 mt-1">&#8226;</span>{b}
+                        <span className="text-emerald-500 mt-0.5">&#8226;</span>{b}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase mb-1">Optimized Description</h4>
-                  <p className="text-sm text-slate-700 whitespace-pre-line">{description}</p>
+                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Description</h4>
+                  <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{description}</p>
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase mb-2">Keywords</h4>
-                  <div className="flex flex-wrap gap-2">
+                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Keywords</h4>
+                  <div className="flex flex-wrap gap-1.5">
                     {keywords.map((kw, i) => <Badge key={i}>{kw}</Badge>)}
                   </div>
                 </div>
