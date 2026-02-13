@@ -9,13 +9,12 @@ import { errorHandler } from './middleware/errorHandler';
 
 const app: Application = express();
 
-// Middleware
+
 app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
 app.use(helmet());
 app.use(morgan('dev'));
 
-// Health check
 app.get('/api/health', (_req: Request, res: Response) => {
     res.status(200).json({
         success: true,
@@ -24,11 +23,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
     });
 });
 
-// Routes
 app.use('/api/products', productRoutes);
 app.use('/api/optimizations', optimizationRoutes);
 
-// Global error handler (must be last)
+
 app.use(errorHandler);
 
 export default app;

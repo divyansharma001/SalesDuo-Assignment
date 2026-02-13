@@ -21,25 +21,29 @@ export default function HomePage() {
       </div>
 
       {/* Search */}
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <AsinSearchForm onSubmit={optimize} loading={loading} />
       </div>
 
       {/* Error */}
       {error && (
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-3xl mx-auto">
           <ErrorAlert message={error} onDismiss={reset} />
         </div>
       )}
 
       {/* Loading */}
       {loading && (
-        <LoadingSpinner message="Fetching product data and generating AI optimization..." />
+        <div className="max-w-3xl mx-auto">
+          <LoadingSpinner message="Fetching product data and generating AI optimization..." />
+        </div>
       )}
 
       {/* Recent optimizations */}
       {!data && !loading && !recentLoading && recentItems && recentItems.length > 0 && (
-        <RecentOptimizations items={recentItems} />
+        <div className="max-w-3xl mx-auto">
+          <RecentOptimizations items={recentItems} />
+        </div>
       )}
 
       {/* Results */}

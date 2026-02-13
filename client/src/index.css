@@ -20,9 +20,9 @@
   height: 340px;
   background: radial-gradient(
     ellipse at 40% 30%,
-    rgba(110, 231, 183, 0.5) 0%,
-    rgba(167, 243, 208, 0.35) 25%,
-    rgba(153, 246, 228, 0.2) 45%,
+    rgba(65, 255, 201, 0.45) 0%,
+    rgba(65, 255, 201, 0.25) 25%,
+    rgba(65, 255, 201, 0.1) 45%,
     transparent 65%
   );
   pointer-events: none;
@@ -38,8 +38,8 @@
   height: 280px;
   background: radial-gradient(
     ellipse at 60% 30%,
-    rgba(167, 243, 208, 0.4) 0%,
-    rgba(153, 246, 228, 0.2) 35%,
+    rgba(255, 209, 146, 0.4) 0%,
+    rgba(255, 209, 146, 0.2) 35%,
     transparent 60%
   );
   pointer-events: none;
@@ -66,7 +66,7 @@
 
 /* Mint gradient button */
 .btn-mint {
-  background: linear-gradient(135deg, #e4f9a0 0%, #a7f3d0 40%, #6ee7b7 100%);
+  background: linear-gradient(135deg, #FFD192 0%, #41FFC9 100%);
   color: #1a4a3a;
   font-weight: 600;
   transition: all 0.25s ease;
@@ -75,8 +75,8 @@
 }
 
 .btn-mint:hover {
-  background: linear-gradient(135deg, #d9f580 0%, #86efac 40%, #34d399 100%);
-  box-shadow: 0 4px 20px rgba(110, 231, 183, 0.35);
+  background: linear-gradient(135deg, #ffc370 0%, #2aedb5 100%);
+  box-shadow: 0 4px 20px rgba(65, 255, 201, 0.3);
   transform: translateY(-1px);
 }
 
