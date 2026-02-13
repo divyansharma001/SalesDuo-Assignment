@@ -4,7 +4,7 @@ import { ProductModel } from '../models/product.model';
 import { OptimizationModel } from '../models/optimization.model';
 import { PRODUCT_CACHE_TTL } from '../utils/constants';
 
-export async function optimizeByAsin(asin: string) {
+export async function optimizeByAsin(asin: string, marketplace: string = 'amazon.in') {
   // Step 1: Check for a recently scraped product (within cache TTL)
   const cached = await ProductModel.findLatestValidByAsin(asin, PRODUCT_CACHE_TTL);
 
@@ -24,7 +24,7 @@ export async function optimizeByAsin(asin: string) {
     imageUrl = cached.imageUrl ?? undefined;
   } else {
     // Step 2: Scrape fresh data from Amazon
-    const scraped = await scrapeAmazonProduct(asin);
+    const scraped = await scrapeAmazonProduct(asin, marketplace);
 
     // Step 3: Persist the scraped product
     productId = await ProductModel.create({

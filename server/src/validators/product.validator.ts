@@ -10,4 +10,10 @@ export const optimizeSchema = Joi.object({
       'string.length': 'ASIN must be exactly 10 characters',
       'any.required': 'ASIN is required',
     }),
+  marketplace: Joi.string()
+    .valid('amazon.com', 'amazon.in', 'amazon.co.uk', 'amazon.de', 'amazon.ca')
+    .default('amazon.in')
+    .messages({
+      'any.only': 'Marketplace must be one of: amazon.com, amazon.in, amazon.co.uk, amazon.de, amazon.ca',
+    }),
 });

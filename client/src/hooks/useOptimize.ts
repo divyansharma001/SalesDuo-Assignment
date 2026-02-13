@@ -7,12 +7,12 @@ export function useOptimize() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const optimize = async (asin: string) => {
+  const optimize = async (asin: string, marketplace: string = 'amazon.in') => {
     setLoading(true);
     setError(null);
     setData(null);
     try {
-      const result = await optimizeProduct(asin);
+      const result = await optimizeProduct(asin, marketplace);
       setData(result.data);
     } catch (err: any) {
       setError(

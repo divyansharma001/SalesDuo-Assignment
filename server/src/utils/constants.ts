@@ -1,6 +1,14 @@
 export const ASIN_REGEX = /^[A-Z0-9]{10}$/;
 
-export const AMAZON_BASE_URL = 'https://www.amazon.com';
+export const AMAZON_DOMAINS: Record<string, string> = {
+  'amazon.com': 'https://www.amazon.com',
+  'amazon.in': 'https://www.amazon.in',
+  'amazon.co.uk': 'https://www.amazon.co.uk',
+  'amazon.de': 'https://www.amazon.de',
+  'amazon.ca': 'https://www.amazon.ca',
+};
+
+export const DEFAULT_MARKETPLACE = 'amazon.in';
 
 export const SCRAPER_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',

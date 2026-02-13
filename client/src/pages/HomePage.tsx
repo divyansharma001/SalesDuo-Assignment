@@ -18,15 +18,6 @@ export default function HomePage() {
         <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
           Optimize Your Amazon<br className="hidden sm:block" /> Listings
         </h2>
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-slate-500 text-sm">
-          <span>AI-Powered Optimization</span>
-          <span className="hidden sm:inline text-slate-300">&middot;</span>
-          <span>SEO-Friendly Titles</span>
-          <span className="hidden sm:inline text-slate-300">&middot;</span>
-          <span>Smart Bullet Points</span>
-          <span className="hidden sm:inline text-slate-300">&middot;</span>
-          <span>Keyword Suggestions</span>
-        </div>
       </div>
 
       {/* Search */}

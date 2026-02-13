@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { ApiError } from '../utils/ApiError';
-import { SCRAPER_HEADERS, AMAZON_BASE_URL } from '../utils/constants';
+import { SCRAPER_HEADERS, AMAZON_DOMAINS, DEFAULT_MARKETPLACE } from '../utils/constants';
 import logger from '../utils/logger';
 
 interface ScrapedData {
@@ -12,8 +12,9 @@ interface ScrapedData {
   image_url: string;
 }
 
-export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> => {
-  const url = `${AMAZON_BASE_URL}/dp/${asin}`;
+export const scrapeAmazonProduct = async (asin: string, marketplace: string = DEFAULT_MARKETPLACE): Promise<ScrapedData> => {
+  const baseUrl = AMAZON_DOMAINS[marketplace] || AMAZON_DOMAINS[DEFAULT_MARKETPLACE];
+  const url = `${baseUrl}/dp/${asin}`;
   logger.info(`Starting scrape for ASIN: ${asin}`, { url });
 
   try {
@@ -26,7 +27,7 @@ export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> =>
     logger.info(`Received response status ${response.status} for ASIN: ${asin}`);
 
     if (response.status === 404) {
-      throw new ApiError(404, `Product with ASIN ${asin} not found on Amazon.com. Please verify: 1) The ASIN exists on amazon.com (not other Amazon domains), 2) The product page is active and not removed.`);
+      throw new ApiError(404, `Product with ASIN ${asin} not found on ${marketplace}. Please verify: 1) The ASIN exists on ${marketplace}, 2) The product page is active and not removed.`);
     }
 
     const $ = cheerio.load(response.data);
@@ -42,7 +43,7 @@ export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> =>
     const bodyText = $('body').text();
     if (pageTitle.includes('Page Not Found') || bodyText.includes('Looking for something') || $('#noResultsTitle').length > 0) {
         logger.warn(`Product page not found for ASIN: ${asin}. Page title: ${pageTitle}`);
-        throw new ApiError(404, `Product with ASIN ${asin} not found on Amazon.com. The product may have been removed or the ASIN may be incorrect.`);
+        throw new ApiError(404, `Product with ASIN ${asin} not found on ${marketplace}. The product may have been removed or the ASIN may be incorrect.`);
     }
 
     // 1. Title
@@ -50,7 +51,7 @@ export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> =>
     if (!title) {
         logger.error(`Failed to extract title for ASIN: ${asin}. Page might not be a valid product page.`);
         logger.debug(`Page title: ${$('title').text()}`);
-        throw new ApiError(422, `Unable to extract product data for ASIN ${asin}. This may not be a valid product page on Amazon.com.`);
+        throw new ApiError(422, `Unable to extract product data for ASIN ${asin}. This may not be a valid product page on ${marketplace}.`);
     }
 
     // 2. Bullet Points
