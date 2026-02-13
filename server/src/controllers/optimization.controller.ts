@@ -4,7 +4,7 @@ import { ApiError } from '../utils/ApiError';
 
 export async function getHistory(req: Request, res: Response, next: NextFunction) {
   try {
-    const { asin } = req.params;
+    const asin = req.params.asin as string;
     const limit = parseInt(req.query.limit as string) || 20;
     const offset = parseInt(req.query.offset as string) || 0;
 
@@ -21,9 +21,18 @@ export async function getHistory(req: Request, res: Response, next: NextFunction
   }
 }
 
+export async function getRecent(_req: Request, res: Response, next: NextFunction) {
+  try {
+    const optimizations = await OptimizationModel.findRecent(10);
+    res.json({ success: true, data: optimizations });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function getById(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     if (isNaN(id)) {
       throw new ApiError(400, 'Invalid optimization ID');
     }

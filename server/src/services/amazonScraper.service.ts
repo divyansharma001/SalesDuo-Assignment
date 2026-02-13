@@ -14,7 +14,7 @@ interface ScrapedData {
 
 export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> => {
   const url = `${AMAZON_BASE_URL}/dp/${asin}`;
-  logger.info(`Starting scrape for ASIN: ${asin}`);
+  logger.info(`Starting scrape for ASIN: ${asin}`, { url });
 
   try {
     const response = await axios.get(url, {
@@ -23,22 +23,34 @@ export const scrapeAmazonProduct = async (asin: string): Promise<ScrapedData> =>
       validateStatus: (status) => status < 500 // Handle 404s manually
     });
 
+    logger.info(`Received response status ${response.status} for ASIN: ${asin}`);
+
     if (response.status === 404) {
-      throw new ApiError(404, `Product with ASIN ${asin} not found on Amazon.`);
+      throw new ApiError(404, `Product with ASIN ${asin} not found on Amazon.com. Please verify: 1) The ASIN exists on amazon.com (not other Amazon domains), 2) The product page is active and not removed.`);
     }
 
     const $ = cheerio.load(response.data);
 
     // Check for CAPTCHA
-    if ($('title').text().includes('Robot Check')) {
+    if ($('title').text().includes('Robot Check') || $('form[action*="validateCaptcha"]').length > 0) {
         logger.warn(`CAPTCHA detected for ASIN: ${asin}`);
         throw new ApiError(503, 'Amazon scraping blocked by CAPTCHA. Please try again later.');
+    }
+
+    // Check for "Page Not Found" indicators
+    const pageTitle = $('title').text();
+    const bodyText = $('body').text();
+    if (pageTitle.includes('Page Not Found') || bodyText.includes('Looking for something') || $('#noResultsTitle').length > 0) {
+        logger.warn(`Product page not found for ASIN: ${asin}. Page title: ${pageTitle}`);
+        throw new ApiError(404, `Product with ASIN ${asin} not found on Amazon.com. The product may have been removed or the ASIN may be incorrect.`);
     }
 
     // 1. Title
     const title = $('#productTitle').text().trim();
     if (!title) {
-        throw new ApiError(422, 'Failed to extract product title. Page structure might have changed.');
+        logger.error(`Failed to extract title for ASIN: ${asin}. Page might not be a valid product page.`);
+        logger.debug(`Page title: ${$('title').text()}`);
+        throw new ApiError(422, `Unable to extract product data for ASIN ${asin}. This may not be a valid product page on Amazon.com.`);
     }
 
     // 2. Bullet Points

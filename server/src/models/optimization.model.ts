@@ -1,4 +1,4 @@
-import { eq, desc, count } from 'drizzle-orm';
+import { eq, desc, count, sql } from 'drizzle-orm';
 import db from '../database/db';
 import { optimizations, products } from '../database/schema';
 
@@ -67,6 +67,32 @@ export const OptimizationModel = {
       .where(eq(optimizations.id, id))
       .limit(1);
     return row;
+  },
+
+  async findRecent(limit = 10) {
+    const subquery = db
+      .select({
+        maxId: sql<number>`MAX(${optimizations.id})`.as('max_id'),
+      })
+      .from(optimizations)
+      .groupBy(optimizations.asin)
+      .as('latest');
+
+    return db
+      .select({
+        id: optimizations.id,
+        asin: optimizations.asin,
+        optimizedTitle: optimizations.optimizedTitle,
+        modelUsed: optimizations.modelUsed,
+        createdAt: optimizations.createdAt,
+        originalTitle: products.title,
+        originalImageUrl: products.imageUrl,
+      })
+      .from(optimizations)
+      .innerJoin(subquery, eq(optimizations.id, subquery.maxId))
+      .innerJoin(products, eq(optimizations.productId, products.id))
+      .orderBy(desc(optimizations.createdAt))
+      .limit(limit);
   },
 
   async countByAsin(asin: string): Promise<number> {
