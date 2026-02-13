@@ -23,27 +23,63 @@ interface ProductInput {
 }
 
 function buildPrompt(product: ProductInput): string {
-  return `You are an expert Amazon listing optimization specialist with deep knowledge of the Amazon A9/A10 search algorithm, consumer psychology, and high-converting copywriting.
+  return `You are a senior Amazon Marketplace listing strategist who has optimized 10,000+ ASINs across every category. You combine deep expertise in:
+- Amazon A9/A10 search ranking algorithm and indexing behavior
+- Consumer psychology, persuasion principles, and high-converting copywriting
+- Amazon Terms of Service and listing policy compliance (Seller Central style guide)
+- Competitive differentiation and brand positioning on Amazon
 
-TASK: Optimize the following Amazon product listing to maximize search visibility, click-through rate, and conversion rate while remaining compliant with Amazon's listing guidelines.
+TASK: Rewrite and optimize the following Amazon product listing. Your goal is to maximize organic search ranking (impressions), click-through rate, and conversion rate — while staying fully compliant with Amazon's content policies (no superlatives like "best" or "#1", no time-sensitive claims, no competitor references, no medical/health guarantees).
 
-CURRENT LISTING:
-- ASIN: ${product.asin}
-- Title: ${product.title}
-- Bullet Points:
-${product.bulletPoints.length > 0 ? product.bulletPoints.map((bp, i) => `  ${i + 1}. ${bp}`).join('\n') : '  (No bullet points available)'}
-- Description: ${product.description || '(No description available)'}
+═══ CURRENT LISTING ═══
+ASIN: ${product.asin}
+Title: ${product.title}
+Bullet Points:
+${product.bulletPoints.length > 0 ? product.bulletPoints.map((bp, i) => `  ${i + 1}. ${bp}`).join('\n') : '  (none provided — infer likely benefits from the title and description)'}
+Description: ${product.description || '(none provided — infer product details from the title and bullets)'}
 
-OPTIMIZATION RULES:
-1. TITLE: Keep under 200 characters. Front-load the primary keyword. Include brand name (if identifiable), key features, product type, secondary features, and size/quantity where applicable. Follow the pattern: [Brand] [Key Feature] [Product Type] [Secondary Features] [Size/Count]. Make it readable — avoid keyword stuffing.
+═══ OPTIMIZATION INSTRUCTIONS ═══
 
-2. BULLET POINTS: Provide exactly 5 bullets. Each bullet must start with a CAPITALIZED benefit phrase (2-4 words) followed by a colon or dash. Focus on benefits first, then supporting features. Include relevant keywords naturally. Each bullet should be 100-200 characters. Cover: primary benefit, key feature, quality/material, use case, and guarantee/trust signal.
+1. IMPROVED TITLE (keyword-rich and readable)
+   - Maximum 200 characters. Front-load the highest-volume primary keyword within the first 80 characters (this portion appears in mobile search results).
+   - Follow the formula: [Brand] + [Primary Keyword / Product Type] + [Key Differentiating Feature] + [Secondary Feature] + [Size / Quantity / Variant] (omit any element you cannot confidently infer).
+   - Integrate 2-3 secondary keywords naturally — the title must read like fluent English, not a keyword dump.
+   - Capitalize the first letter of each major word (Title Case). Do NOT use ALL CAPS, special characters (★, ✓, etc.), or promotional phrases ("Sale", "Free Shipping").
+   - If the original title already contains a recognizable brand name, keep it at the start.
 
-3. DESCRIPTION: Write 800-1500 characters of persuasive, benefit-driven copy. Use short paragraphs. Open with a compelling hook. Include specific details (dimensions, materials, use cases). End with a clear call to action. Naturally weave in relevant keywords without stuffing. Do NOT use HTML tags.
+2. REWRITTEN BULLET POINTS (clear and concise)
+   - Return exactly 5 bullets, each between 150-250 characters.
+   - Structure each bullet as: **CAPITALIZED BENEFIT PHRASE (2-5 words):** followed by a supporting explanation that blends a feature with its real-world benefit to the buyer.
+   - Bullet order:
+     ① Primary benefit / unique selling proposition
+     ② Key feature or technology differentiator
+     ③ Quality, material, or build detail
+     ④ Ideal use case, audience, or occasion
+     ⑤ Trust signal — warranty, what's included, or satisfaction promise
+   - Naturally embed 1-2 relevant keywords per bullet without forcing them.
+   - Write for scanners: lead with the outcome the customer cares about, then explain how the product delivers it.
+   - Avoid vague filler ("great product", "high quality"). Be specific — mention numbers, materials, dimensions, or comparisons to generic alternatives where possible.
+   - Do NOT use HTML, emojis, or special symbols.
 
-4. KEYWORDS: Provide exactly 5 high-value backend search terms that are NOT already used in the title or bullet points. Focus on synonyms, related search terms, long-tail phrases, and common misspellings. Each keyword should be a phrase (2-4 words), not a single word.
+3. ENHANCED DESCRIPTION (persuasive but compliant)
+   - Write 800-1500 characters of compelling, benefit-forward copy.
+   - Structure: Hook sentence (address a pain point or aspiration) → 2-3 short paragraphs expanding on key benefits with sensory and specific details (dimensions, materials, weight, use cases) → Closing call to action ("Add to cart", "Click Buy Now", etc.).
+   - Tone: confident and trustworthy — like a knowledgeable friend recommending the product. Avoid hype, exaggeration, or unverifiable claims.
+   - Weave in 3-5 relevant long-tail keywords naturally throughout; never repeat the exact same keyword phrase more than once.
+   - Do NOT use HTML tags, markdown, emojis, or special formatting characters. Plain text only.
+   - Ensure compliance: no health/medical claims, no "guaranteed" results, no competitor mentions, no time-limited language.
 
-Respond ONLY with valid JSON matching the exact structure specified.`;
+4. KEYWORD SUGGESTIONS (3-5 new backend search terms)
+   - Provide exactly 5 high-value keyword phrases that are NOT already present in the optimized title, bullets, or description.
+   - Each keyword should be 2-4 words — focus on:
+     • Synonyms and alternate names for the product ("tumbler" ↔ "insulated cup")
+     • Long-tail buyer-intent phrases ("gift for dad", "office desk accessories")
+     • Common misspellings or alternate spellings shoppers actually type
+     • Related use-case or occasion terms ("camping gear", "back to school")
+     • Spanish or other language terms if the product category has significant bilingual search volume
+   - Do NOT include brand names, ASINs, or single generic words.
+
+Respond with valid JSON only. No commentary outside the JSON object.`;
 }
 
 export async function optimizeWithGemini(product: ProductInput): Promise<OptimizationResult> {
