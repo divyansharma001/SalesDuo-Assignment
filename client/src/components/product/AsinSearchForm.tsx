@@ -16,7 +16,7 @@ interface Props {
 
 export default function AsinSearchForm({ onSubmit, loading }: Props) {
   const [asin, setAsin] = useState('');
-  const [marketplace, setMarketplace] = useState('amazon.in');
+  const [marketplace, setMarketplace] = useState(MARKETPLACES[0].value);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSubmit = (e: FormEvent) => {

@@ -2,9 +2,9 @@ import { scrapeAmazonProduct } from './amazonScraper.service';
 import { optimizeWithGemini } from './gemini.service';
 import { ProductModel } from '../models/product.model';
 import { OptimizationModel } from '../models/optimization.model';
-import { PRODUCT_CACHE_TTL } from '../utils/constants';
+import { PRODUCT_CACHE_TTL, DEFAULT_MARKETPLACE } from '../utils/constants';
 
-export async function optimizeByAsin(asin: string, marketplace: string = 'amazon.in') {
+export async function optimizeByAsin(asin: string, marketplace: string = DEFAULT_MARKETPLACE) {
   // Step 1: Check for a recently scraped product (within cache TTL)
   const cached = await ProductModel.findLatestValidByAsin(asin, PRODUCT_CACHE_TTL);
 
